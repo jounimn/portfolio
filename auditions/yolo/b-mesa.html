@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B · Mesa de controle — Nilson Lopes — Dados, BI e Automação</title>
+<meta name="color-scheme" content="light">
+<meta name="description" content="Nilson Lopes — dados, BI e automação com contexto de operação.">
+<style>
+:root{
+  --paper:#ece6d8;--card:#f7f3e9;--ink:#17130e;--mute:#5d564a;--line:#cbc2ad;
+  --signal:#d9431a;--signal-ink:#a52f0f;--board:#17130e;--board-2:#2a251c;--board-ink:#f1e9d4;--ok:#1d6b3f;
+  --display:"Bahnschrift","Arial Narrow","Segoe UI",sans-serif;
+  --text:"Segoe UI Variable Text","Segoe UI",system-ui,sans-serif;
+  --mono:"Cascadia Mono",Consolas,ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html{background:var(--paper);color:var(--ink);scroll-behavior:smooth;overflow-x:clip}
+body{margin:0;overflow-x:clip;font:1.0625rem/1.6 var(--text);background:
+  repeating-linear-gradient(0deg,transparent 0 31px,rgb(23 19 14 / .045) 31px 32px)}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+.ic{width:1.1em;height:1.1em;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+a{color:var(--signal-ink)}
+:focus-visible{outline:3px solid var(--signal);outline-offset:3px}
+.skip-link{position:absolute;left:1rem;top:-4rem;background:var(--ink);color:var(--paper);padding:.6rem 1rem;z-index:30}
+.skip-link:focus{top:1rem}
+header.bar{position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:.8rem clamp(1rem,4vw,2.5rem);background:var(--board);color:var(--board-ink)}
+.mark{font:700 1.2rem var(--display);color:var(--board-ink);text-decoration:none;text-transform:uppercase}
+.mark b{color:var(--signal)}
+nav{display:flex;gap:clamp(.8rem,3vw,2rem);font:.95rem var(--mono)}
+nav a{color:var(--board-ink);text-decoration:none;padding:.35rem 0;border-bottom:2px solid transparent}
+nav a:hover{border-color:var(--signal)}
+main{padding:0 clamp(1rem,5vw,4rem)}
+.hero{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:clamp(1.5rem,4vw,4rem);align-items:center;min-height:calc(100svh - 4rem);padding:3rem 0;max-width:74rem;margin:0 auto}
+.hero h1{font:700 clamp(3rem,8.4vw,7rem)/.9 var(--display);text-transform:uppercase;letter-spacing:-.02em;margin:0 0 1.4rem}
+.hero p{max-width:34rem;margin:0 0 1.6rem;color:var(--mute)}
+.board{background:var(--board);color:var(--board-ink);padding:.9rem 1rem;margin:0 0 1.6rem;display:inline-flex;gap:.5rem;flex-wrap:wrap;align-items:center;font:700 1.15rem var(--mono)}
+.flap{display:inline-block;font-family:var(--mono);font-weight:700;font-variant-numeric:tabular-nums}
+.board .flap{background:var(--board-2);padding:.2rem .45rem;text-transform:uppercase}
+.board .ic{color:var(--signal)}
+.badge{background:var(--card);border:2px solid var(--ink);padding:1rem 1rem 1.4rem;transform:rotate(1.6deg);box-shadow:8px 8px 0 var(--ink);max-width:19rem;justify-self:center}
+.badge img{display:block;width:100%;aspect-ratio:1;object-fit:cover;border:2px solid var(--ink)}
+.badge p{margin:.8rem 0 0;font:700 1.05rem var(--display);text-transform:uppercase;color:var(--ink)}
+.cta{display:flex;flex-wrap:wrap;gap:.8rem}
+.btn{display:inline-flex;gap:.5rem;align-items:center;padding:.8rem 1.1rem;font:700 .98rem var(--text);text-decoration:none;border:2px solid var(--ink);color:var(--ink);background:var(--card);border-radius:4px;transition:background-color .15s,color .15s}
+.btn.main{background:var(--signal);border-color:var(--ink);color:var(--ink)}
+.btn:hover{background:var(--ink);color:var(--paper)}
+.section-head{max-width:74rem;margin:5rem auto 1.5rem}
+.section-head h2{font:700 clamp(2rem,5vw,3.6rem)/.95 var(--display);text-transform:uppercase;margin:0 0 .6rem}
+.section-head p{max-width:42rem;margin:0;color:var(--mute)}
+/* tíquetes empilhados */
+.stack{max-width:74rem;margin:0 auto;padding-bottom:6rem}
+.ticket{position:sticky;top:calc(4.6rem + var(--i) * 18px);display:grid;grid-template-columns:minmax(0,1fr) 11rem;background:var(--card);border:2px solid var(--ink);box-shadow:6px 6px 0 var(--ink);margin:0 0 4rem;transform:rotate(calc((var(--i) - 1.5) * .35deg));transition:transform .5s cubic-bezier(.2,.8,.2,1),opacity .4s}
+.ticket .body{padding:clamp(1.2rem,3vw,2rem)}
+.ticket h3{font:700 clamp(1.7rem,4vw,2.8rem)/1 var(--display);text-transform:uppercase;margin:.3rem 0 .4rem}
+.ticket .meta{margin-bottom:1rem}
+.meta{margin:0;font:.85rem var(--mono);color:var(--mute)}
+.meta .flap{color:var(--signal-ink);margin-right:.5rem}
+.qa{margin:0;display:grid;gap:.9rem}
+.qa dt{font:700 .9rem var(--mono);color:var(--signal-ink)}
+.qa dd{margin:.2rem 0 0;max-width:65ch}
+.qa ol{margin:.1rem 0 0;padding-left:1.2rem}.qa li{margin:.2rem 0}
+.shot{display:block;width:100%;max-width:34rem;height:auto;border:2px solid var(--ink);margin:0 0 1rem}
+.link{display:inline-flex;gap:.4rem;align-items:center;margin-top:1.1rem;font:700 .95rem var(--mono)}
+.stub{position:relative;border-left:2px dashed var(--ink);background:var(--paper);display:flex;align-items:center;justify-content:center;padding:1rem;overflow:visible}
+.tear{display:flex;flex-direction:column;align-items:center;gap:.5rem;background:var(--signal);color:var(--ink);border:2px solid var(--ink);padding:1rem .7rem;font:700 .9rem var(--display);text-transform:uppercase;cursor:grab;touch-action:none;user-select:none;border-radius:2px;width:100%}
+.tear:active{cursor:grabbing}
+.tear .ic{width:1.6em;height:1.6em}
+.stamp{position:absolute;inset:auto auto 1rem 1rem;display:none;gap:.35rem;align-items:center;font:700 1rem var(--display);text-transform:uppercase;color:var(--ok);border:3px solid var(--ok);padding:.2rem .5rem;transform:rotate(-8deg)}
+.ticket.done .stamp{display:inline-flex;animation:stamp .35s cubic-bezier(.2,1.4,.4,1) both}
+.ticket.done .tear{display:none}
+.ticket.done .stub{background:var(--card)}
+@keyframes stamp{from{transform:scale(2.2) rotate(-18deg);opacity:0}to{transform:scale(1) rotate(-8deg);opacity:1}}
+@media (prefers-reduced-motion:reduce){.ticket,.ticket.done .stamp{transition:none;animation:none}}
+.lab .stack .ticket{position:relative;top:auto}
+.contact{max-width:74rem;margin:0 auto;padding:4rem 0 5rem}
+.contact h2{font:700 clamp(2rem,5vw,3.6rem)/.95 var(--display);text-transform:uppercase;margin:0 0 .8rem;max-width:18ch}
+.contact p{max-width:40rem;color:var(--mute)}
+footer{background:var(--board);color:var(--board-ink);padding:1.4rem clamp(1rem,5vw,4rem);font:.85rem var(--mono)}
+@media (max-width:760px){
+  .hero{grid-template-columns:minmax(0,1fr)}
+  .badge{justify-self:start;order:-1;max-width:13rem}
+  .ticket{grid-template-columns:minmax(0,1fr);position:relative;top:auto}
+  .stub{border-left:0;border-top:2px dashed var(--ink)}
+  nav a:nth-child(2){display:none}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<symbol id="i-arrow-ur" viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9"/></symbol>
+<symbol id="i-arrow-r" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+<symbol id="i-branch" viewBox="0 0 24 24"><path d="M6 3v12M18 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM6 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM18 9a9 9 0 0 1-9 9"/></symbol>
+<symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 5 5L20 7"/></symbol>
+<symbol id="i-hold" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></symbol>
+<symbol id="i-refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5"/></symbol>
+<symbol id="i-grip" viewBox="0 0 24 24"><path d="M9 6h.01M9 12h.01M9 18h.01M15 6h.01M15 12h.01M15 18h.01"/></symbol>
+</defs></svg>
+<a class="skip-link" href="#projetos">Pular para o conteúdo</a>
+<header class="bar">
+  <a class="mark" href="#top" aria-label="Nilson Lopes — início">Nilson<b>/</b>Lopes</a>
+  <nav aria-label="Navegação principal"><a href="#projetos">Projetos</a><a href="#lab">Fora do expediente</a><a href="#contato">Contato</a></nav>
+</header>
+<main>
+  <section class="hero" id="top">
+    <div>
+      <div class="board" aria-label="Operação → Dados → Ação"><span class="flap" data-text="Operação">Operação</span><svg class="ic " viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-arrow-r"/></svg><span class="flap" data-text="Dados">Dados</span><svg class="ic " viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-arrow-r"/></svg><span class="flap" data-text="Ação">Ação</span></div>
+      <h1>Eu conecto operação, dados e automação.</h1>
+      <p>Sou Nilson. Minha trajetória passou pelo design, por redes e por operações antes de chegar a dados e BI. Essa experiência me ajuda a entender o problema de quem usa a informação e a construir análises, pipelines e automações que tornam o trabalho mais confiável.</p>
+      <div class="cta">
+        <a class="btn main" href="#projetos">Ver projetos <svg class="ic " viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-arrow-r"/></svg></a>
+        <a class="btn" href="https://www.linkedin.com/in/nilsondgwm/" target="_blank" rel="noreferrer"><svg class="ic " viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-chat"/></svg> Conversar no LinkedIn</a>
+      </div>
+    </div>
+    <figure class="badge" style="margin:0">
+      <img src="../../site/assets/images/nilson-lopes.jpg" width="400" height="400" alt="Retrato de Nilson Lopes, com fundo azul.">
+      <p>Nilson Lopes</p>
+    </figure>
+  </section>
+
+  <div class="section-head" id="projetos">
+    <h2>Alloha Planejamento</h2>
+    <p>A maior parte do que construí está aqui, no dia a dia de Planejamento e MIS. O código é da empresa e fica privado: mostro o problema e o caminho até a solução, não os dados.</p>
+  </div>
+  <div class="stack">
+    
+<article class="ticket" id="leitura" style="--i:0">
+  <div class="body">
+    <h3>Leitura de disparo</h3>
+    <p class="meta"><span class="flap" data-text="01/04">01/04</span> Coletor de relatórios</p>
+    
+    
+<dl class="qa">
+  <div><dt>Qual problema isso resolvia?</dt><dd>Os relatórios de disparo chegavam soltos e eram reunidos e lidos à mão, a cada rodada.</dd></div>
+  <div><dt>Como foi resolvido?</dt><dd><ol><li>Mapeei como o relatório chega e o que cada leitura precisa mostrar.</li><li>Escrevi um coletor que lê os relatórios e padroniza os campos.</li><li>Reuni tudo num só lugar, pronto para consulta.</li></ol></dd></div>
+  <div><dt>Qual foi o resultado?</dt><dd>A leitura deixou de depender de montagem manual. O time passou a olhar o dado já organizado, em vez de preparar o dado.</dd></div>
+</dl>
+    
+    
+  </div>
+  <div class="stub">
+    <button class="tear" type="button" aria-label="Despachar o tíquete Leitura de disparo"><svg class="ic " viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-grip"/></svg><span>Arraste para despachar</span></button>
+    <span class="stamp" aria-hidden="true"><svg class="ic " viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-check"/></svg> Despachado</span>
+  </div>
+</article>
+<article class="ticket" id="reddir" style="--i:1">
+  <div class="body">
+    <h3>Atualização da apresentação Reddir</h3>
+    <p class="meta"><span class="flap" data-text="02/04">02/04</span> Automação de apresentação</p>
+    
+    
+<dl class="qa">
+  <div><dt>Qual problema isso resolvia?</dt><dd>A apresentação de acompanhamento era refeita à mão a cada atualização.</dd></div>
+  <div><dt>Como foi resolvido?</dt><dd><ol><li>Listei o que mudava a cada ciclo e o que ficava fixo.</li><li>Separei a fonte dos dados do desenho da apresentação.</li><li>Automatizei: os números entram e a apresentação se refaz.</li></ol></dd></div>
+  <div><dt>Qual foi o resultado?</dt><dd>A atualização deixou de ser uma tarefa de cada ciclo e passou a rodar sozinha.</dd></div>
+</dl>
+    
+    
+  </div>
+  <div class="stub">
+    <button class="tear" type="button" aria-label="Despachar o tíquete Atualização da apresentação Reddir"><svg class="ic " viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-grip"/></svg><span>Arraste para despachar</span></button>
+    <span class="stamp" aria-hidden="true"><svg class="ic " viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-check"/></svg> Despachado</span>
+  </div>
+</article>
+<article class="ticket" id="m" style="--i:2">
+  <div class="body">
+    <h3>Parametrizador de código M</h3>
+    <p class="meta"><span class="flap" data-text="03/04">03/04</span> Ferramenta para Power Query</p>
+    
+    
+<dl class="qa">
+  <div><dt>Qual problema isso resolvia?</dt><dd>Cada consulta do Power Query tinha valores presos no código: trocar uma fonte ou um filtro era reescrever e conferir à mão.</dd></div>
+  <div><dt>Como foi resolvido?</dt><dd><ol><li>Identifiquei o que mudava de uma consulta para outra.</li><li>Tirei esses valores do código e criei parâmetros com nome.</li><li>Montei a ferramenta que gera o código M a partir dos parâmetros.</li></ol></dd></div>
+  <div><dt>Qual foi o resultado?</dt><dd>Mudar uma fonte virou ajustar um parâmetro. Menos retrabalho e menos erro de digitação.</dd></div>
+</dl>
+    
+    
+  </div>
+  <div class="stub">
+    <button class="tear" type="button" aria-label="Despachar o tíquete Parametrizador de código M"><svg class="ic " viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-grip"/></svg><span>Arraste para despachar</span></button>
+    <span class="stamp" aria-hidden="true"><svg class="ic " viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-check"/></svg> Despachado</span>
+  </div>
+</article>
+<article class="ticket" id="pi" style="--i:3">
+  <div class="body">
+    <h3>Planning Intelligence</h3>
+    <p class="meta"><span class="flap" data-text="04/04">04/04</span> Pipeline de dados</p>
+    <img class="shot" src="../../site/assets/images/planning-intelligence.png" alt="Painel do Planning Intelligence com indicadores e gráficos usando nomes e dados fictícios." width="1440" height="900" loading="lazy">
+    
+<dl class="qa">
+  <div><dt>Qual problema isso resolvia?</dt><dd>O planejamento morava numa árvore de planilhas enorme, difícil de rastrear e de reaproveitar em análises.</dd></div>
+  <div><dt>Como foi resolvido?</dt><dd><ol><li>Li a estrutura da árvore e defini o que cada nível significa.</li><li>Construí uma pipeline versionada, independente de provedor e coberta por testes.</li><li>Cada valor sai com a sua origem: dá para voltar do número até a célula.</li></ol></dd></div>
+  <div><dt>Qual foi o resultado?</dt><dd>Um conjunto de dados estruturado e rastreável. A amostra pública é sanitizada; nomes e dados são fictícios.</dd></div>
+</dl>
+    <a class="link" href="https://github.com/jounimn/website-analytics" target="_blank" rel="noreferrer">Ver amostra pública <svg class="ic " viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-arrow-ur"/></svg></a>
+    
+  </div>
+  <div class="stub">
+    <button class="tear" type="button" aria-label="Despachar o tíquete Planning Intelligence"><svg class="ic " viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-grip"/></svg><span>Arraste para despachar</span></button>
+    <span class="stamp" aria-hidden="true"><svg class="ic " viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-check"/></svg> Despachado</span>
+  </div>
+</article>
+  </div>
+
+  <section class="lab" id="lab">
+    <div class="section-head" style="margin-top:2rem">
+      <h2>Fora do expediente</h2>
+      <p>Um projeto público, feito por conta própria.</p>
+    </div>
+    <div class="stack">
+      
+<article class="ticket" id="dnd" style="--i:0">
+  <div class="body">
+    <h3>df-DnD</h3>
+    <p class="meta"><span class="flap" data-text="01/01">01/01</span> Fichas de D&amp;D por edição · em pausa</p>
+    
+    
+<dl class="qa">
+  <div><dt>Qual problema isso resolvia?</dt><dd>Cada edição de D&amp;D (AD&amp;D 2e, 5e 2014, 5e 2024) tem regras diferentes, e fichas genéricas erram as contas de uma ou de outra.</dd></div>
+  <div><dt>Como foi resolvido?</dt><dd><ol><li>Modelei as regras de cada edição separadamente.</li><li>Montei o app em Next.js com Supabase, com a ficha pronta para imprimir.</li><li>Deixei a edição como escolha do usuário, sem misturar regras.</li></ol></dd></div>
+  <div><dt>Qual foi o resultado?</dt><dd>O projeto está em pausa. Segue público como registro do que já foi construído.</dd></div>
+</dl>
+    
+    
+  </div>
+  <div class="stub">
+    <button class="tear" type="button" aria-label="Despachar o tíquete df-DnD"><svg class="ic " viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-grip"/></svg><span>Arraste para despachar</span></button>
+    <span class="stamp" aria-hidden="true"><svg class="ic " viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-check"/></svg> Despachado</span>
+  </div>
+</article>
+    </div>
+  </section>
+
+  <section class="contact" id="contato">
+    <h2>Vamos tornar seu processo mais confiável?</h2>
+    <p>Se você procura alguém para RPA, análise de dados, BI ou automação, conte o que a equipe precisa resolver. A conversa começa pelo problema.</p>
+    <div class="cta">
+      <a class="btn main" href="https://www.linkedin.com/in/nilsondgwm/" target="_blank" rel="noreferrer"><svg class="ic " viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-chat"/></svg> Fale comigo no LinkedIn</a>
+      <a class="btn" href="https://github.com/jounimn" target="_blank" rel="noreferrer"><svg class="ic " viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-branch"/></svg> GitHub</a>
+    </div>
+  </section>
+</main>
+<footer>Dados, BI e automação. Rio de Janeiro, BR.</footer>
+<script>
+(() => {
+  const mq = matchMedia('(prefers-reduced-motion: reduce)');
+  const GL = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/';
+  // painel de partidas: as letras giram e assentam quando entram na tela
+  function flip(el) {
+    const txt = el.dataset.text; if (mq.matches || el.dataset.ran) return; el.dataset.ran = 1;
+    const t0 = performance.now();
+    (function tick(t) {
+      const k = (t - t0) / 700; let s = '';
+      for (let i = 0; i < txt.length; i++) s += (txt[i] === ' ' || k > 0.25 + i / (txt.length * 1.6)) ? txt[i] : GL[Math.floor(Math.random() * GL.length)];
+      el.textContent = s; if (k < 1.1) requestAnimationFrame(tick); else el.textContent = txt;
+    })(t0);
+  }
+  const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) flip(e.target); }), { threshold: 0.6 });
+  document.querySelectorAll('.flap').forEach((el) => io.observe(el));
+  // despachar: arrastar o canhoto, ou Enter/Espaço
+  document.querySelectorAll('.ticket').forEach((tk) => {
+    const btn = tk.querySelector('.tear'), body = tk.querySelector('.stub');
+    const finish = () => { tk.classList.add('done'); btn.style.transform = ''; };
+    let x0 = null, dx = 0;
+    btn.addEventListener('pointerdown', (e) => { btn.setPointerCapture(e.pointerId); x0 = e.clientX; dx = 0; });
+    btn.addEventListener('pointermove', (e) => { if (x0 === null) return; dx = Math.max(0, e.clientX - x0); btn.style.transform = 'translateX(' + dx + 'px) rotate(' + dx / 14 + 'deg)'; });
+    const up = () => { if (x0 === null) return; x0 = null; if (dx > 110) finish(); else { btn.style.transition = 'transform .3s'; btn.style.transform = ''; setTimeout(() => (btn.style.transition = ''), 320); } };
+    btn.addEventListener('pointerup', up); btn.addEventListener('pointercancel', up);
+    btn.addEventListener('click', () => { if (dx < 6) finish(); });
+  });
+})();
+</script>
+</body>
+</html>
