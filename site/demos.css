@@ -1,0 +1,148 @@
+/* Demonstrações por projeto. Mesma linguagem da linha do tempo: fibra, nó e o pulso vermelho.
+   O estado de repouso (sem movimento) é o resultado final; a animação só existe com html.motion. */
+.demo{--T:12s;background:var(--veil);position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:2rem 0 0;border-top:1px solid var(--line)}
+.demo .st{position:relative;padding:1.3rem 1.2rem 0 0;min-width:0}
+.demo .nd{position:absolute;top:-5px;left:0;width:9px;height:9px;border-radius:50%;background:var(--vfl);box-shadow:0 0 14px var(--vfl)}
+.demo .sig{position:absolute;top:-1px;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--vfl) 88%,var(--pulse));box-shadow:0 0 10px var(--vfl);transform-origin:left;transform:scaleX(0);opacity:0}
+.demo .vis{position:relative;height:8rem;overflow:hidden}
+.demo figcaption{margin-top:.9rem;max-width:28ch;font:.84rem/1.45 var(--mono);color:var(--mute)}
+.note{margin:.8rem 0 0;font:.76rem var(--mono);color:var(--mute)}
+.demo i,.demo b,.demo u,.demo s,.demo em{display:block;text-decoration:none;font-style:normal}
+
+/* peças de repouso (estado final) */
+.p0a{position:relative;height:100%}
+.p0a b{position:absolute;left:calc(var(--n)*7% + 2%);top:calc(var(--n)*22%);width:62%;height:1.5rem;background:repeating-linear-gradient(90deg,var(--line) 0 18%,transparent 18% 24%);border:1px solid var(--line);transform:rotate(calc((var(--n) - 1.5)*2.2deg))}
+.p0b{display:grid;grid-template-columns:repeat(3,1fr);gap:.55rem;height:100%;align-content:start;padding-top:.4rem}
+.p0b i{height:1.35rem;background:var(--line);border-radius:2px}
+.p0b i:nth-child(-n+3){background:var(--vfl-soft);opacity:.7}
+.p0c{display:grid;gap:.5rem;align-content:start;padding-top:.4rem}
+.p0c u{height:1.35rem;background:var(--vfl-soft);opacity:.7;border-radius:2px}
+.p0c i{height:1.1rem;background:repeating-linear-gradient(90deg,var(--line) 0 30%,transparent 30% 33.33%);transform-origin:left}
+
+.p1a{display:grid;grid-template-columns:repeat(4,1fr);gap:.45rem;padding-top:.4rem}
+.p1a i{height:1.4rem;background:var(--line);border-radius:2px}
+.p1b,.p1c{position:relative;height:100%;border:1px solid var(--line);padding:.6rem;display:grid;grid-template-columns:1.5fr 1fr;grid-template-rows:auto 1fr;gap:.5rem}
+.p1b i{border:1px dashed var(--vfl-soft);border-radius:2px}
+.p1b .ti,.p1c u{grid-column:1/-1;height:.9rem}
+.p1c u{background:var(--line);border-radius:2px}
+.p1b .gr{grid-row:2/4;grid-column:1}
+.p1b .tx{height:1.1rem;grid-column:2}
+.p1c .bars{display:flex;align-items:flex-end;gap:.4rem;grid-column:1;grid-row:2/4;border-bottom:1px solid var(--line)}
+.p1c .bars i{flex:1;height:100%;transform-origin:bottom;transform:scaleY(var(--b));background:var(--vfl-soft);opacity:.85}
+.p1c s{grid-column:2;height:.8rem;background:var(--line);border-radius:2px;align-self:start}
+
+.p2a,.p2c{display:grid;gap:.7rem;align-content:start;padding-top:.5rem}
+.p2b{display:flex;flex-direction:column;gap:.7rem;align-items:flex-start;padding-top:.5rem}
+.demo code{font:.68rem/1.4 var(--mono);color:var(--ink);white-space:nowrap}
+.demo mark{color:var(--ink);background:none;padding:0 .15rem;border-radius:2px}
+.demo .lit{text-decoration:underline wavy var(--vfl);text-underline-offset:3px}
+.demo .par{border:1px solid var(--vfl);background:color-mix(in srgb,var(--vfl) 18%,transparent)}
+.p2b b{font:600 .78rem var(--mono);color:var(--ink);border:1px solid var(--vfl);border-radius:3px;padding:.3rem .7rem}
+
+.demo svg{display:block;width:100%;height:100%}
+.demo svg path{fill:none;stroke:var(--line);stroke-width:1.4}
+.demo svg circle{fill:var(--glass);stroke:var(--mute);stroke-width:1.2}
+.demo .bd{fill:color-mix(in srgb,var(--vfl) 14%,transparent)}
+.demo .val{fill:var(--glass);stroke:var(--vfl);stroke-width:1.2}
+.demo svg .trace{stroke:var(--vfl);stroke-width:2;stroke-dasharray:130;stroke-dashoffset:0}
+.demo svg .hit{fill:var(--vfl);stroke:var(--vfl)}
+
+.dna{display:grid;gap:.5rem;padding-top:.4rem}
+.dna b{font:600 .8rem var(--mono);padding:.35rem .6rem;border:1px solid var(--line);border-radius:3px;color:var(--mute)}
+.dna .e2{border-color:var(--vfl);color:var(--ink)}
+.dnb{display:grid;gap:.55rem;padding-top:.4rem}
+.rw{margin:0;display:grid;gap:.1rem}
+.lb{font:.72rem var(--mono);color:var(--mute)}
+.vl{display:grid;gap:.15rem;font:600 .84rem var(--text)}
+.vl em::before{content:attr(data-e) ": ";font:400 .72rem var(--mono);color:var(--mute)}
+html.motion .vl em{grid-area:1/1}
+html.motion .vl em::before{content:none}
+.dnc{position:relative;height:100%;border:1px solid var(--line);padding:.7rem;display:grid;gap:.5rem;align-content:start;overflow:hidden}
+.dnc u{height:1rem;background:var(--vfl-soft);opacity:.7;border-radius:2px}
+.dnc s{height:.8rem;background:var(--line);border-radius:2px}
+.dnc .scan{position:absolute;inset:0;background:linear-gradient(var(--vfl),var(--vfl)) bottom/100% 2px no-repeat;transform:translateY(-100%);opacity:0}
+
+/* movimento: um pulso só, percorrendo as três etapas; cada etapa reage quando ele chega */
+html.motion .demo :is(.sig,.nd,.vis,.vis *){animation-duration:var(--T);animation-iteration-count:infinite;animation-timing-function:ease-in-out;animation-fill-mode:both}
+html.motion .demo.restart :is(.sig,.nd,.vis,.vis *){animation:none!important}
+html.motion .demo:not(.seen) :is(.sig,.nd,.vis,.vis *){animation-play-state:paused}
+html.motion .demo .sig{animation-name:sigx;animation-timing-function:linear}
+html.motion .demo .nd.n0{animation-name:nd0}
+html.motion .demo .nd.n1{animation-name:nd1}
+html.motion .demo .nd.n2{animation-name:nd2}
+html.motion .demo .vis{animation-name:fade}
+@keyframes fade{0%{opacity:0}4%,92%{opacity:1}100%{opacity:0}}
+@keyframes sigx{0%{transform:scaleX(0);opacity:0}2%{opacity:1}58%{transform:scaleX(1);opacity:1}64%,100%{transform:scaleX(1);opacity:0}}
+@keyframes sigy{0%{transform:scaleY(0);opacity:0}2%{opacity:1}58%{transform:scaleY(1);opacity:1}64%,100%{transform:scaleY(1);opacity:0}}
+@keyframes nd0{0%{background:var(--glass);box-shadow:none}3%,92%{background:var(--vfl);box-shadow:0 0 14px var(--vfl)}100%{background:var(--glass);box-shadow:none}}
+@keyframes nd1{0%,19%{background:var(--glass);box-shadow:none}22%,92%{background:var(--vfl);box-shadow:0 0 14px var(--vfl)}100%{background:var(--glass);box-shadow:none}}
+@keyframes nd2{0%,38%{background:var(--glass);box-shadow:none}41%,92%{background:var(--vfl);box-shadow:0 0 14px var(--vfl)}100%{background:var(--glass);box-shadow:none}}
+
+/* p0: relatórios soltos → campos alinhados → uma tabela */
+html.motion .p0a b{animation-name:p0in;animation-delay:calc(var(--n)*.14s)}
+html.motion .p0b i{animation-name:p0snap}
+html.motion .p0c i{animation-name:p0row;animation-delay:calc(var(--n)*.2s)}
+@keyframes p0in{0%{opacity:0;transform:translateX(-20px) rotate(calc((var(--n) - 1.5)*2.2deg))}6%,100%{opacity:1;transform:rotate(calc((var(--n) - 1.5)*2.2deg))}}
+@keyframes p0snap{0%,18%{transform:translate(var(--dx),var(--dy));opacity:.55}34%,100%{transform:none;opacity:1}}
+@keyframes p0row{0%,38%{transform:scaleX(0)}50%,100%{transform:none}}
+
+/* p1: números entram → lugares fixos → barras se refazem no ciclo seguinte */
+html.motion .p1a i{animation-name:p1num}
+html.motion .p1b i{animation-name:p1slot}
+html.motion .p1c .bars i{animation-name:p1bar;animation-delay:calc(var(--n)*.12s)}
+@keyframes p1num{0%,2%{background:var(--vfl-soft)}12%,64%{background:var(--line)}68%{background:var(--vfl-soft)}78%,100%{background:var(--line)}}
+@keyframes p1slot{0%,18%{border-color:var(--line)}26%,34%{border-color:var(--vfl)}42%,68%{border-color:var(--vfl-soft)}72%{border-color:var(--vfl)}82%,100%{border-color:var(--vfl-soft)}}
+@keyframes p1bar{0%,40%{transform:scaleY(0)}54%,66%{transform:scaleY(var(--a))}80%,100%{transform:scaleY(var(--b))}}
+
+/* p2: valores presos → parâmetros → código gerado */
+html.motion .p2a .lit{animation-name:p2lit}
+html.motion .p2b b{animation-name:p2chip;animation-delay:calc(var(--n)*.18s)}
+html.motion .p2c code{animation-name:p2gen;animation-delay:calc(var(--n)*.25s)}
+html.motion .p2c .par{animation-name:p2par}
+@keyframes p2lit{0%{background:none}6%,16%{background:color-mix(in srgb,var(--vfl) 35%,transparent)}24%,100%{background:none}}
+@keyframes p2chip{0%,18%{opacity:0;transform:translateY(12px)}30%,66%{opacity:1;transform:none;background:none}70%{background:color-mix(in srgb,var(--vfl) 35%,transparent)}80%,100%{opacity:1;transform:none;background:none}}
+@keyframes p2gen{0%,38%{clip-path:inset(0 100% 0 0)}54%,100%{clip-path:inset(0)}}
+@keyframes p2par{0%,72%{background:color-mix(in srgb,var(--vfl) 18%,transparent)}76%{background:color-mix(in srgb,var(--vfl) 55%,transparent)}86%,100%{background:color-mix(in srgb,var(--vfl) 18%,transparent)}}
+
+/* p3: árvore → níveis com significado → caminho de volta até a célula */
+html.motion .p3a .dt circle,html.motion .p3b .dt circle{animation-name:p3pop;animation-delay:calc(var(--n)*.07s)}
+html.motion .p3b .bd{animation-name:p3band;animation-delay:calc(var(--n)*.9s)}
+html.motion .p3c .trace{animation-name:p3trace}
+html.motion .p3c .hit{animation-name:p3hit}
+@keyframes p3pop{0%{transform:scale(0);opacity:0}8%,100%{transform:scale(1);opacity:1}}
+@keyframes p3band{0%,18%{opacity:0}26%,32%{opacity:1}42%,100%{opacity:.35}}
+@keyframes p3trace{0%,42%{stroke-dashoffset:130}62%,100%{stroke-dashoffset:0}}
+@keyframes p3hit{0%,60%{opacity:0}66%,100%{opacity:1}}
+.p3a circle,.p3b circle,.p3c circle{transform-box:fill-box;transform-origin:center}
+
+/* dnd: edição escolhida → regras da edição → folha sendo impressa */
+html.motion .dna .e0{animation-name:ed0}
+html.motion .dna .e1{animation-name:ed1}
+html.motion .dna .e2{animation-name:ed2}
+html.motion .vl .v0{animation-name:va0}
+html.motion .vl .v1{animation-name:va1}
+html.motion .vl .v2{animation-name:va2}
+html.motion .dnc .scan{animation-name:scan}
+@keyframes ed0{0%,28%{border-color:var(--vfl);color:var(--ink)}32%,100%{border-color:var(--line);color:var(--mute)}}
+@keyframes ed1{0%,28%{border-color:var(--line);color:var(--mute)}32%,60%{border-color:var(--vfl);color:var(--ink)}64%,100%{border-color:var(--line);color:var(--mute)}}
+@keyframes ed2{0%,60%{border-color:var(--line);color:var(--mute)}64%,92%{border-color:var(--vfl);color:var(--ink)}100%{border-color:var(--line);color:var(--mute)}}
+@keyframes va0{0%,28%{opacity:1}32%,100%{opacity:0}}
+@keyframes va1{0%,28%{opacity:0}32%,60%{opacity:1}64%,100%{opacity:0}}
+@keyframes va2{0%,60%{opacity:0}64%,92%{opacity:1}100%{opacity:0}}
+@keyframes scan{0%,4%{transform:translateY(-100%);opacity:0}6%{opacity:1}28%{transform:none;opacity:1}30%{opacity:0;transform:translateY(-100%)}36%{opacity:0}38%{opacity:1}58%{transform:none;opacity:1}60%{opacity:0;transform:translateY(-100%)}66%{opacity:0}68%{opacity:1}90%{transform:none;opacity:1}92%,100%{opacity:0;transform:translateY(-100%)}}
+
+/* telas estreitas: a fibra desce, as etapas se empilham */
+@media (max-width:760px){
+  .demo{grid-template-columns:minmax(0,1fr);border-top:0;border-left:1px solid var(--line);padding-left:1.4rem}
+  .demo .st{padding:0 0 1.6rem}
+  .demo .nd{top:0;left:calc(-1.4rem - 4px)}
+  .demo .sig{left:-1.4rem;right:auto;top:0;bottom:0;width:2px;height:auto;background:linear-gradient(180deg,transparent,var(--vfl) 88%,var(--pulse));transform-origin:top;transform:scaleY(0)}
+  html.motion .demo .sig{animation-name:sigy}
+  .demo .vis{height:7rem}
+}
+
+@media print{
+  .demo{border-color:var(--sheet-line);break-inside:avoid}
+  .demo .vis,.demo .sig,.demo .nd{display:none}
+  .demo figcaption,.note{color:var(--sheet-mute)}
+}
