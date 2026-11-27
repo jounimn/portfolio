@@ -1,5 +1,7 @@
 # Nilson Lopes — virtual résumé
 
+**Live:** https://jounimn.github.io/portfolio/ · [LinkedIn](https://www.linkedin.com/in/nilsondgwm/)
+
 A bilingual (PT/EN) résumé built as a route you travel: a fiber-optic cable that runs from where I started, in networks, to where I work now, in data. Each project is a node on the cable, and each one told as a short story, from the problem to the result.
 
 ## Why it exists
@@ -9,9 +11,10 @@ A résumé is usually a list of nouns: it says what someone worked with, not how
 ## What is on the page
 
 - **Origin:** design (2021), networks (2023), operations (2024), data (2026).
+- **Today:** the current Planning and MIS role (Alloha, since May 2026), in six blocks: metrics, Power BI dashboards, pipelines and notebooks, tools and automations, AI agents, and good practices.
 - **Alloha Planejamento:** four tools from day-to-day Planning and MIS work. The code is private to the company, so the page shows the problem and the path, not the data.
   Each tool also has a short animated demonstration of its mechanism (a three-node fibre with the same red pulse), in `scripts/demos.mjs` and `site/demos.css`. They are illustrative and show no real data or code; under reduced motion they rest on the final state.
-- **Side project:** df-DnD (on hold, public).
+- **Side project:** df-DnD (on hold, code private).
 - **Contact:** LinkedIn, GitHub, and a "Save as PDF" button.
 
 ## Run it
@@ -26,21 +29,22 @@ The copy for both languages lives in `scripts/site-content.mjs`. `npm run build`
 
 ## How it is made
 
-- **The scene** (`site/scripts/fiber.js`) is procedural Three.js (r170, vendored under `site/assets/vendor/`, MIT): a Catmull-Rom curve for the cable, a lit tube whose draw range follows the scroll, branch tubes for the nodes, travelling pulses and dust. No imported 3D models.
+- **The scene** (`site/scripts/fiber.js`) is procedural Three.js (r170, vendored under `site/assets/vendor/`, MIT): a Catmull-Rom curve for the cable, a lit tube whose draw range follows the scroll, branch tubes for the nodes, travelling pulses and instanced data packets, dust, a circuit grid, connector markers for the career steps, and one small 3D emblem per tool that repeats the mechanism of its demonstration. No imported 3D models.
+- **The demonstrations** (`scripts/demos.mjs`, `site/demos.css`) are CSS and SVG: a three-node fibre per tool with the same red pulse running through the stages. They are illustrative and show no real data or code, run only while on screen, and rest on the final state under reduced motion.
 - **Quality per device:** one table (`TIERS`) sets the pixel ratio and the amount of dust. It is chosen from cores, memory and width, and steps down by itself if frames take too long.
 - **Floor:** the scene starts only with WebGL2 and when reduced motion is not requested. Under reduced motion, without WebGL or without scripts, the page is plain text with the same content. No sound is used.
 - **Type:** Fraunces, Geist and Geist Mono (SIL Open Font License, files and licenses under `site/assets/fonts/`).
-- **Weight:** about 840 KB on first view, 700 KB of it the Three.js module.
+- **Weight:** about 870 KB on first view, 710 KB of it the Three.js module.
 
 ## Images
 
-- The portrait is supplied by Nilson and stored in `site/assets/images/nilson-lopes.jpg`.
+- The portrait is supplied by Nilson and stored in `site/assets/images/nilson-lopes.jpg`. Its background was recoloured from blue to orange by shifting only the blue hues, so skin and hair are untouched.
 - The Planning Intelligence image is a screenshot of the public [`website-analytics`](https://github.com/jounimn/website-analytics) sample. Its organization names and data are fictional.
 - No stock imagery.
 
 ## Deploy
 
-`.github/workflows/deploy-pages.yml` publishes only `site/` to GitHub Pages on pushes to `main`. In the repository settings, Pages must use **GitHub Actions** as its source.
+`.github/workflows/deploy-pages.yml` publishes only `site/` to GitHub Pages on pushes to `main`, at https://jounimn.github.io/portfolio/. In the repository settings, Pages must use **GitHub Actions** as its source.
 
 ## Prototypes
 
